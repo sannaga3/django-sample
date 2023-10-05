@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    <h1>postList</h1>
+    {% if messages %}
+      {% for message in messages %}
+        <div>{{ message.message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% if posts %}
+      <div class="list-container">
+        <div class="list-item">id</div>
+        <div class="list-item">title</div>
+        <div class="list-item">content</div>
+      </div>
+      <hr>
+        {% for post in posts %}
+          <div class="list-container">
+              <div class="list-item">{{ post.id }}</div>
+              <div class="list-item">{{ post.title }}</div>
+              <div class="list-item">{{ post.content }}</div>
+              {% if post.user_id == request.user.id %}
+                <div class="list-item">
+                  <a href="{% url 'posts:show' post.id %}">show</a>
+                </div>
+                <div class="list-item">
+                  <a href="{% url 'posts:update' post.id %}">update</a>
+                </div>
+                <div class="list-item">
+                  <a href="{% url 'posts:delete' post.id %}" class="delete-post">delete</a>
+                </div>
+              {% endif %}
+          </div>
+          <hr>
+        {% endfor %}
+    {% endif %}
+  {% endif %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const deleteLinks = document.querySelectorAll(".delete-post");
+      deleteLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+          event.preventDefault();
+    
+          const confirmDelete = confirm("この投稿を削除しますか？");
+          if (confirmDelete) {
+            window.location.href = link.getAttribute("href");
+          }
+        });
+      });
+    });
+    </script>
+{% endblock %}

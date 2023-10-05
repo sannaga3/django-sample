@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %} 
+  {% load static %}
+  <h1>update</h1>
+  {% if messages %} 
+    {% for message in messages %}
+      <div>{{ message.message }}</div>
+    {% endfor %}
+  {% endif %}
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {{ user_form.as_p }} {{ profile_form.as_p }}
+    <input type="submit" value="register" />
+  </form>
+  {% if profile and profile.picture %}
+    <img src="{{ profile.picture.url }}" alt="画像" id="profile-image" />
+  {% endif %}
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#id_picture").on("change", function (e) {
+        var input = e.target;
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $("#profile-image").attr("src", e.target.result);
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      });
+    });
+  </script>
+{% endblock %}

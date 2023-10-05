@@ -1,0 +1,11 @@
+.list-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 30px;
+}
+
+.list-item {
+  width: 100px;
+  padding: 1px 2px;
+}

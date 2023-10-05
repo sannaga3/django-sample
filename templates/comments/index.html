@@ -1,0 +1,38 @@
+{% if user.is_authenticated %}
+  <h3>comment list</h3>
+  <div class="list-container border-bottom">content</div>
+  {% for comment in comments %}
+    <div class="list-container border-bottom">
+        <div class="list-item">{{ comment.content }}</div>
+        {% if comment.user_id == request.user.id %}
+          <div class="list-item">
+            <a href="{% url 'comments:update' comment.id %}">update</a>
+          </div>
+          <div class="list-item">
+            <a href="{% url 'comments:delete' comment.id %}" class="delete-post">delete</a>
+          </div>
+        {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
+<style>
+  .border-bottom {
+    border-bottom: 1px solid gray;
+    padding: 5px 0;
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const deleteLinks = document.querySelectorAll(".delete-post");
+    deleteLinks.forEach(function(link) {
+      link.addEventListener("click", function(event) {
+        event.preventDefault();
+  
+        const confirmDelete = confirm("この投稿を削除しますか？");
+        if (confirmDelete) {
+          window.location.href = link.getAttribute("href");
+        }
+      });
+    });
+  });
+  </script>
